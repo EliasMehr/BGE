@@ -1,9 +1,11 @@
 import javax.swing.*;
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.IllegalFormatCodePointException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -36,14 +38,45 @@ public class SystemUtility {
         return customerData;
     }
 
+    public static List<History> fetchCustomerHistoryFromFile(String Path) {
+        List<History> customerData = new LinkedList<>();
+
+        try (Scanner sc = new Scanner(new FileReader(Path))) {
+            while (sc.hasNextLine()) {
+                History acitivityLogg = new History();
+
+                String readCustomerFromFilePath = sc.nextLine();
+                acitivityLogg.setName(readCustomerFromFilePath.substring(readCustomerFromFilePath.indexOf(':') + 2));
+
+                readCustomerFromFilePath = sc.nextLine();
+                acitivityLogg.setPersonID(readCustomerFromFilePath.substring(readCustomerFromFilePath.indexOf(':') + 2));
+
+                readCustomerFromFilePath = sc.nextLine();
+                acitivityLogg.setPaymentOfMembership(readCustomerFromFilePath.substring(readCustomerFromFilePath.indexOf(':') + 2));
+
+                readCustomerFromFilePath = sc.nextLine();
+                acitivityLogg.setMemberStatus(readCustomerFromFilePath.substring(readCustomerFromFilePath.indexOf(':') + 2));
+
+                readCustomerFromFilePath = sc.nextLine();
+                acitivityLogg.setLatestActivity(readCustomerFromFilePath.substring(readCustomerFromFilePath.indexOf(':') + 2));
+
+                customerData.add(acitivityLogg);
+
+                sc.nextLine();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return customerData;
+    }
+
     public static void searchCustomerFromList(List<Person> customerList) {
         while (true) {
             boolean doesCustomerExist = false;
 
             String searchInput = JOptionPane.showInputDialog(null, "Sök kund..", TITLE_SEARCH, JOptionPane.INFORMATION_MESSAGE);
             if (searchInput == null) {
-                JOptionPane.showMessageDialog(null, "Avslutar programmet...");
-                System.exit(0);
+                Menu.menuSelectionAlternative();
             } else if (searchInput.trim().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Ogiltig inmatning!");
                 continue;
@@ -54,6 +87,7 @@ public class SystemUtility {
                     JOptionPane.showMessageDialog(null, customer.toString());
                     doesCustomerExist = true;
                     validateCustomerBeforeWriteToFile(customer);
+                    Menu.menuSelectionAlternative();
                 }
             if (!doesCustomerExist) {
                 JOptionPane.showMessageDialog(null, searchInput + " är inte medlemm hos oss!");
@@ -71,8 +105,9 @@ public class SystemUtility {
             if (confirmAlternative == JOptionPane.YES_OPTION) {
                 writeCustomerToFile(person);
                 JOptionPane.showMessageDialog(null, person.getName() + ", du är nu instämplad");
-            } else
+            } else {
                 return validateInData = false;
+            }
         }
         return validateInData;
     }
@@ -80,7 +115,6 @@ public class SystemUtility {
     public static void writeCustomerToFile(Person saveObject) {
         try (PrintWriter writeToFile = new PrintWriter(new BufferedWriter(new FileWriter("src//db//customerActivity.txt", true)))) {
 
-            //String timeStampForCustomer = "\nSenaste aktivitet: " + LocalDate.now() + "  " + LocalTime.now().withNano(0);
             String timeStampForCustomer = "\nSenaste aktivitet: " + LocalDateTime.now().withNano(0);
             writeToFile.write(String.valueOf(saveObject));
             writeToFile.write(timeStampForCustomer.replace('T', ' ') + "\n");
@@ -91,4 +125,17 @@ public class SystemUtility {
             JOptionPane.showMessageDialog(null, "Kan inte spara användare");
         }
     }
+
+    public static void viewCustomerActivity(List<History> customerHistory) {
+        Object[] customers = customerHistory.toArray();
+        Object menuInput = JOptionPane.showInputDialog(null, "Vänligen välj kund att följa upp", null, JOptionPane.INFORMATION_MESSAGE, null, customers, "null");
+
+        for (int i = 0; i < customerHistory.size(); i++) {
+            if (menuInput == customers[i])
+                JOptionPane.showMessageDialog(null, customerHistory.get(i));
+        }
+        Menu.menuSelectionAlternative();
+    }
+
+
 }
