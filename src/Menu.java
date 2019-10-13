@@ -1,10 +1,10 @@
 import javax.swing.*;
 
-public class Menu {
+class Menu {
 
-    public static final String TITLE_WELCOME = "BESTGYMEVER - MENY";
+    static final String TITLE_WELCOME = "BESTGYMEVER - MENY";
 
-    public static void menuSelectionAlternative() {
+    static void menuSelectionAlternative() {
         String[] menuAlternatives = {"1.Sök kunder", "2.Läs kund aktivitet", "3.Avsluta programmet"};
         Object menuInput = JOptionPane.showInputDialog(null, "Vänligen välj ett val", TITLE_WELCOME, JOptionPane.INFORMATION_MESSAGE, null, menuAlternatives, "1.Sök kunder");
 
@@ -18,5 +18,4 @@ public class Menu {
             System.exit(0);
         }
     }
-
 }
