@@ -38,13 +38,15 @@ public class SystemUtility {
         return customerData;
     }
 
+
+
     public static List<History> fetchCustomerHistoryFromFile(String Path) {
         List<History> customerData = new LinkedList<>();
 
         try (Scanner sc = new Scanner(new FileReader(Path))) {
             while (sc.hasNextLine()) {
-                History acitivityLogg = new History();
 
+                History acitivityLogg = new History();
                 String readCustomerFromFilePath = sc.nextLine();
                 acitivityLogg.setName(readCustomerFromFilePath.substring(readCustomerFromFilePath.indexOf(':') + 2));
 
@@ -70,7 +72,7 @@ public class SystemUtility {
         return customerData;
     }
 
-    public static void searchCustomerFromList(List<Person> customerList) {
+    public static String searchCustomerFromList(List<Person> customerList) {
         while (true) {
             boolean doesCustomerExist = false;
 
@@ -88,6 +90,7 @@ public class SystemUtility {
                     doesCustomerExist = true;
                     validateCustomerBeforeWriteToFile(customer);
                     Menu.menuSelectionAlternative();
+                    return customer.getName();
                 }
             if (!doesCustomerExist) {
                 JOptionPane.showMessageDialog(null, searchInput + " är inte medlemm hos oss!");
@@ -106,14 +109,14 @@ public class SystemUtility {
                 writeCustomerToFile(person);
                 JOptionPane.showMessageDialog(null, person.getName() + ", du är nu instämplad");
             } else {
-                return validateInData = false;
+
             }
         }
         return validateInData;
     }
 
     public static void writeCustomerToFile(Person saveObject) {
-        try (PrintWriter writeToFile = new PrintWriter(new BufferedWriter(new FileWriter("src//db//customerActivity.txt", true)))) {
+        try (PrintWriter writeToFile = new PrintWriter(new BufferedWriter(new FileWriter("src//db//" + saveObject.getName() + ".txt", true)))) {
 
             String timeStampForCustomer = "\nSenaste aktivitet: " + LocalDateTime.now().withNano(0);
             writeToFile.write(String.valueOf(saveObject));
@@ -128,7 +131,7 @@ public class SystemUtility {
 
     public static void viewCustomerActivity(List<History> customerHistory) {
         Object[] customers = customerHistory.toArray();
-        Object menuInput = JOptionPane.showInputDialog(null, "Vänligen välj kund att följa upp", null, JOptionPane.INFORMATION_MESSAGE, null, customers, "null");
+        Object menuInput = JOptionPane.showInputDialog(null, "Vänligen välj kund att följa upp", null, JOptionPane.INFORMATION_MESSAGE, null, customers, "null" );
 
         for (int i = 0; i < customerHistory.size(); i++) {
             if (menuInput == customers[i])

@@ -10,6 +10,7 @@ public class GateKeeper {
     }
 
     public static void searchCustomerActivity() {
+        History getMember = new History();
         List<History> customerHistory = SystemUtility.fetchCustomerHistoryFromFile("src//db//customerActivity.txt");
         SystemUtility.viewCustomerActivity(customerHistory);
     }
