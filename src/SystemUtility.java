@@ -113,7 +113,7 @@ public class SystemUtility {
     }
 
     public static void writeCustomerToFile(Person saveObject) {
-        try (PrintWriter writeToFile = new PrintWriter(new BufferedWriter(new FileWriter("src//db//" + saveObject.getName() + ".txt", true)))) {
+        try (PrintWriter writeToFile = new PrintWriter(new BufferedWriter(new FileWriter("src//db//customerActivity.txt", true)))) {
 
             String timeStampForCustomer = "\nSenaste aktivitet: " + LocalDateTime.now().withNano(0);
             writeToFile.write(String.valueOf(saveObject));

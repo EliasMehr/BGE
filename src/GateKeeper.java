@@ -1,6 +1,3 @@
-import java.text.NumberFormat;
-import java.util.Formatter;
-import java.util.LinkedList;
 import java.util.List;
 
 public class GateKeeper {
@@ -11,9 +8,7 @@ public class GateKeeper {
     }
 
     public static void searchCustomerActivity() {
-        History p = new History();
-        p.setName("Bear Belle");
-        List<History> customerHistory = SystemUtility.fetchCustomerHistoryFromFile("src//db//" + p.getName() + ".txt");
+        List<History> customerHistory = SystemUtility.fetchCustomerHistoryFromFile("src//db//customerActivity.txt");
         SystemUtility.viewCustomerActivity(customerHistory);
     }
 }
