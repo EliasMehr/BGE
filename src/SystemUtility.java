@@ -108,6 +108,15 @@ public class SystemUtility {
             } else {
 
             }
+        } else if (person.getIsMembershipActive() == false) {
+            int confirmAlternative = JOptionPane.showConfirmDialog(null, "Vill du förnya ditt medlemmskap?", TITLE_CHECK_IN, JOptionPane.YES_NO_OPTION);
+            if (confirmAlternative == JOptionPane.YES_OPTION) {
+                person.setMembershipPaymentDate(LocalDate.now());
+                person.setMembershipActive(true);
+                JOptionPane.showMessageDialog(null, person.getName() + ", ditt medlemmskap är nu förnyat,\nFrån: " + LocalDate.now()
+                        + "\nTill: " + LocalDate.now().plusYears(1));
+                writeCustomerToFile(person);
+            }
         }
         return validateInData;
     }
@@ -128,7 +137,7 @@ public class SystemUtility {
 
     public static void viewCustomerActivity(List<History> customerHistory) {
         Object[] customers = customerHistory.toArray();
-        Object menuInput = JOptionPane.showInputDialog(null, "Vänligen välj kund att följa upp", null, JOptionPane.INFORMATION_MESSAGE, null, customers, "null" );
+        Object menuInput = JOptionPane.showInputDialog(null, "Vänligen välj kund att följa upp", null, JOptionPane.INFORMATION_MESSAGE, null, customers, "null");
 
         for (int i = 0; i < customerHistory.size(); i++) {
             if (menuInput == customers[i])

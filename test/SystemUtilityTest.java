@@ -59,7 +59,7 @@ class SystemUtilityTest {
         testPerson.setMembershipPaymentDate(LocalDate.of(2019, 02, 15));
         testPerson.setMembershipActive(testPerson.verifyMembership());
         SystemUtility.writeCustomerToFile(testPerson);
-        List<History> customerHistory = SystemUtility.fetchCustomerHistoryFromFile("src//db//" + testPerson.getName() + ".txt");
+        List<History> customerHistory = SystemUtility.fetchCustomerHistoryFromFile("src//db//customerActivity.txt");
 
         assertTrue(customerHistory.get(0).getName().equalsIgnoreCase("Bear belle"));
 
