@@ -38,15 +38,13 @@ public class SystemUtility {
         return customerData;
     }
 
-
-
     public static List<History> fetchCustomerHistoryFromFile(String Path) {
         List<History> customerData = new LinkedList<>();
 
         try (Scanner sc = new Scanner(new FileReader(Path))) {
             while (sc.hasNextLine()) {
-
                 History acitivityLogg = new History();
+
                 String readCustomerFromFilePath = sc.nextLine();
                 acitivityLogg.setName(readCustomerFromFilePath.substring(readCustomerFromFilePath.indexOf(':') + 2));
 
@@ -72,7 +70,7 @@ public class SystemUtility {
         return customerData;
     }
 
-    public static String searchCustomerFromList(List<Person> customerList) {
+    public static void searchCustomerFromList(List<Person> customerList) {
         while (true) {
             boolean doesCustomerExist = false;
 
@@ -90,7 +88,6 @@ public class SystemUtility {
                     doesCustomerExist = true;
                     validateCustomerBeforeWriteToFile(customer);
                     Menu.menuSelectionAlternative();
-                    return customer.getName();
                 }
             if (!doesCustomerExist) {
                 JOptionPane.showMessageDialog(null, searchInput + " är inte medlemm hos oss!");
